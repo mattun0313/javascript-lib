@@ -20,7 +20,7 @@
 //
 //	参照サイト　http://www.devirtuoso.com/2009/06/how-to-create-a-twitter-jquery-plugin/?dzref=193075
 //
-// 	2010.12.23 	masanori.matsumoto	新規作成
+// 	2012.03.06 	masanori.matsumoto	新規作成
 //================================================
 
 (function($){
