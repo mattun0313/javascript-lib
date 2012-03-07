@@ -20,6 +20,7 @@
 //
 // 	2012.03.06 	masanori.matsumoto	新規作成
 // 	2012.03.07 	masanori.matsumoto	祝日判定追加（2012/03/07現在）
+// 	                                独自休日ファイルを読込で処理追加
 //================================================
 
 (function($){
@@ -31,16 +32,35 @@
 			day: new Date(),
 			weekTl:['日','月','火','水','木','金','土'],
 			weekCls:['sun','mon','tue','wed','thu','fri','sat'],
-			file:'',
+			file:'',/* original holiday(file type「yyyy/mm/dd,yyyy/mm/dd,...」) */
 			jHolFlg:false/*japanese holiday*/
 		}
 		//初期設定をオプションのオブジェクトで上書き
 		opt = $.extend(defaultOpt, opt);
-		createCal(target,opt);
+		
+		if(opt.file==''){
+			createCal(target,opt);
+		}else{
+			//独自休日ファイルを非同期で読込み後処理
+			$.ajax({
+				url:opt.file,
+				type:'get',
+				dataType:'text',
+				success:function(data){
+					opt.holiData = data;
+					createCal(target,opt);
+				},
+				error:function(obj,sts,errobj){
+					console.log('load err');
+					createCal(target,opt);
+				}
+			})
+		}
 		
 		return target;
 	};
 	
+	//カレンダー作成実処理
 	function createCal(target,opt){
 		var strHtml = ""; 	//HTMLコード一次退避領域
 		var stDay = (new Date(opt.day.getFullYear(),opt.day.getMonth(),1)).getDay();
@@ -49,6 +69,12 @@
 		var cntDay = 1;
 		var arrCal = [];
 		var today = new Date();
+		var curDay;
+		var hd=[];
+		
+		if('holiData' in opt){
+			var hd = opt.holiData.split(',');
+		}
 		
 		$('.prev',target).unbind();
 		$('.next',target).unbind();
@@ -81,13 +107,21 @@
 			for(var j=0;j<7;j++){
 				var clsName = opt.weekCls[j];
 				if(arrCal[i][j]!='&nbsp;'){
+					curDay = new Date(opt.day.getFullYear(),opt.day.getMonth(),arrCal[i][j]);
 					//当日ならクラス名「today」付加
-					if(today.getFullYear()==opt.day.getFullYear()&&today.getMonth()==opt.day.getMonth()&&today.getDate()==arrCal[i][j]){
+					if(today.getTime()==curDay.getTime()){
 						clsName += ' today';
 					}
 					//祝日判定
-					if(opt.jHolFlg&&jHoliday(opt.day.getFullYear(),opt.day.getMonth()+1,arrCal[i][j])){
+					if(opt.jHolFlg&&jHoliday(curDay)){
 						clsName += ' jHol';
+					}
+					//opt.fileから読み込んだ休日判定
+					for(var k=0;k<hd.length;k++){
+						if(curDay.getTime()==(new Date(hd[k])).getTime()){
+							clsName += ' orHol';
+							break;
+						}
 					}
 				}
 				strHtml += '<th class="'+clsName+'">' + arrCal[i][j] + '</th>'				
@@ -96,7 +130,7 @@
 		}
 		strHtml += '</table>'
 		
-		target.append(strHtml);
+		target.append(strHtml);//DOMに出力
 
 		$('.prev',target).bind('click',$.extend({},opt),function(e){
 			e.data.day = new Date(e.data.day.getFullYear(),e.data.day.getMonth()-1,1);
@@ -111,8 +145,11 @@
 				
 	}
 	//-------------------祝日判定処理
-	function jHoliday(y,m,d){
-		var day = new Date(y,m-1,d).getDay();
+	function jHoliday(curDay){
+		var day = curDay.getDay();
+		var y = curDay.getFullYear();
+		var m = curDay.getMonth()+1;
+		var d = curDay.getDate();
 		var yesterDay;
 		
 		switch(m){
@@ -188,7 +225,7 @@
 		//振替休日判定(月曜だけ)
 		if(day==1){
 			yesterDay = new Date(y,m-1,d-1);
-			return jHoliday(yesterDay.getFullYear(),yesterDay.getMonth()+1,yesterDay.getDate());
+			return jHoliday(yesterDay);
 		}
 		return ''
 	}
