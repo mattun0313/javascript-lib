@@ -109,7 +109,7 @@
 				if(arrCal[i][j]!='&nbsp;'){
 					curDay = new Date(opt.day.getFullYear(),opt.day.getMonth(),arrCal[i][j]);
 					//当日ならクラス名「today」付加
-					if(today.getTime()==curDay.getTime()){
+					if(today.getFullYear()==curDay.getFullYear()&&today.getMonth()==curDay.getMonth()&&today.getDate()==curDay.getDate()){
 						clsName += ' today';
 					}
 					//祝日判定
