@@ -51,7 +51,7 @@
 					createCal(target,opt);
 				},
 				error:function(obj,sts,errobj){
-					console.log('load err');
+//					console.log('load err');
 					createCal(target,opt);
 				}
 			})
