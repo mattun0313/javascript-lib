@@ -8,13 +8,14 @@
 //	・背景画像をアニメーションする場合
 //  	<div id="hoge"></div>に背景を設定
 //  	$(function(){
-//    	$('#hoge').mParallaxBg(opt);
+//    	$('#hoge').mParallaxBg(option);
 //  	});で実行
 //		[option]
 //			speed:{x:speed x, y:speed y}
 //			startPos:{x:positon x, y:position y}
 //			endPos:{x:positon x, y:position y}
-//
+//			※startPosはフレームインしたタイミングの位置、
+//			 endPosはフレームアウトしたタイミングの位置です。
 //  version 1.0.0
 //　MIT license.
 //
