@@ -15,7 +15,7 @@
 //			startPos:{x:positon x, y:position y}
 //			endPos:{x:positon x, y:position y}
 //			※startPosはフレームインしたタイミングの位置、
-//			 endPosはフレームアウトしたタイミングの位置です。
+//			 endPosはストップ位置です。
 //  version 1.0.0
 //　MIT license.
 //
