@@ -10,7 +10,7 @@
 //    $('.foo').mScroll(opt);
 //  });で実行
 //	option
-//		easing:fadeout easing
+//		easing:easing
 //		du:duration time
 //
 //  version 1.0.0
