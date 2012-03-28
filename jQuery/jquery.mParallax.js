@@ -48,17 +48,11 @@
 			return this.each(function(){
 				var target = $(this);
 				var setBgPos = function(){
-					var ww = $(window).width(),
-							wh = $(window).height(),
-							sx = $(window).scrollLeft(),
-							sy = $(window).scrollTop(),
-							iti = target.offset(),
-							tw = target.width(),
-							th = target.height();
-					if((sy + wh >= iti.top && sy <= iti.top + th) && (sx + ww >= iti.left && sx <= iti.left + tw)){
+					var chk = chkFrameIn(target);
+					if(chk.inFlg){
 						//表示領域にいる場合
-						var bgPosX = opt.startPos.x + (sx + ww - iti.left) * opt.speed.x;
-						var bgPosY = opt.startPos.y + (sy + wh - iti.top) * opt.speed.y;
+						var bgPosX = opt.startPos.x + (chk.obj.sx + chk.obj.ww - chk.obj.iti.left) * opt.speed.x;
+						var bgPosY = opt.startPos.y + (chk.obj.sy + chk.obj.wh - chk.obj.iti.top) * opt.speed.y;
 						if((opt.speed.x>0 && bgPosX>opt.endPos.x) || (opt.speed.x<0 && bgPosX<opt.endPos.x)){
 							bgPosX = opt.endPos.x;
 						}
@@ -73,4 +67,18 @@
 			})
 		}
 	})
+	
+	function chkFrameIn(target){
+		var obj = {
+			ww:$(window).width(),
+			wh:$(window).height(),
+			sx:$(window).scrollLeft(),
+			sy:$(window).scrollTop(),
+			iti:target.offset(),
+			tw:target.width(),
+			th:target.height()
+		}
+		
+		return {inFlg:(obj.sy + obj.wh >= obj.iti.top && obj.sy <= obj.iti.top + obj.th) && (obj.sx + obj.ww >= obj.iti.left && obj.sx <= obj.iti.left + obj.tw),obj:obj};
+	}
 })(jQuery);
