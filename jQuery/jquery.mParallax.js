@@ -71,9 +71,21 @@
 		mPrlxAnime: function(opt){
 			//初期設定
 			opt = $.extend({
+				speed:0.1,
+				maxNum:20
 			}, opt);
 			return this.each(function(){
+				var target = $(this);
 				var setImage = function(){
+					var chk = chkFrameIn(target);
+					if(chk.inFlg){
+						//表示領域にいる場合
+						var dispPos = chk.obj.sy + chk.obj.wh - chk.obj.iti.top;
+						var imgNum = Math.ceil(dispPos*opt.speed);
+						if(!imgNum) imgNum = 1;
+						if(imgNum > opt.maxNum) imgNum = opt.maxNum;
+						//target.attr('src','hoge'+imgNum+'.jpg');
+					}
 				}
 				setImage();
 				$(window).bind('scroll resize', setImage);
