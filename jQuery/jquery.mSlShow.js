@@ -5,13 +5,12 @@
 //
 //  使用方法
 //  ※jquery.jsを先に読み込む必要があります。
-//  <div id="AAAAA">
-//    <div><img /><div>
-//    <div><img /><div>
+//  <ul id="AAAAA">
+//    <li><img /></li>
+//    <li><img /></li>
 //    ・
 //    ・
-//    ・
-//  </div>を記述
+//  </ul>
 //  $(function(){
 //    $('#AAAAA').mSlShow(opt);
 //  });で実行
@@ -20,10 +19,11 @@
 //		time:show time
 //		du:fadeout time
 //
-//  version 1.0.0
+//  version 1.0.1
 //　MIT license.
 //
-//  2012.03.09  masanori.matsumoto  新規作成
+//  2012.03.09  masanori.matsumoto  new
+//  2012.10.29  masanori.matsumoto  update div→ul
 //================================================
 
 (function($){
@@ -41,7 +41,7 @@
     opt = $.extend(defaultOpt, opt);
 
     var target = this;
-    var targetChild = $(target).children('div');
+    var targetChild = $(target).children('li');
     var max_cnt = targetChild.length;
     var curImg = 0;
     
